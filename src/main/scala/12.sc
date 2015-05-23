@@ -1,20 +1,24 @@
 "Magnet pattern"
 
+import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.language.implicitConversions
+
 sealed trait TwiceMagnet {
   type R
   def apply(): R
 }
-
 //noinspection NoReturnTypeForImplicitDef
 object TwiceMagnet {
-  implicit def intMagnet(x: Int) =
+  implicit def intMagnet(x: Future[Int]) =
     new TwiceMagnet {
-      override def apply(): R = 2 * x
-      override type R = Int
+      override def apply(): R = x.map(2 * _)
+      override type R = Future[Int]
     }
 
-  //todo: list magnet
+  //todo: string?
+
 }
 
 def twice(magnet: TwiceMagnet): magnet.R = magnet()
-val x: Int = twice(1)
+val x = twice(Future.successful(2))
