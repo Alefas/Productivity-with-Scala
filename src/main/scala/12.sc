@@ -17,8 +17,8 @@ object TwiceMagnet {
     }
 
   //todo: string?
-
 }
 
 def twice(magnet: TwiceMagnet): magnet.R = magnet()
+
 val x = twice(Future.successful(2))
